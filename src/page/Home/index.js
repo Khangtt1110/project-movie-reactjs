@@ -5,17 +5,18 @@ import Header from '~/layout/Header';
 import Footer from '~/layout/Footer';
 import MovieList from '~/components/MovieList';
 import { useDispatch } from 'react-redux';
-import { fetchAsyncMovies } from '~/features/movies/movieSlice';
+import { fetchAsyncMovies, fetchAsyncSeries } from '~/features/movies/movieSlice';
 
 const cx = classNames.bind(styles);
 
 const Home = () => {
     const dispatch = useDispatch();
-    const movieData = 'Harry';
-    const seriesData = 'Friend';
+    const movieData = 'Doraemon';
+    const seriesData = 'Conan';
 
     useEffect(() => {
         dispatch(fetchAsyncMovies(movieData));
+        dispatch(fetchAsyncSeries(seriesData));
     }, [dispatch]);
     return (
         <div>
