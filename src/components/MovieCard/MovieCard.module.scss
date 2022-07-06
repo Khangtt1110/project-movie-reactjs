@@ -5,18 +5,21 @@
 
 .card {
     height: 400px;
+    width: 100% !important;
 
-    &:hover>.image {
-        opacity: 0.7;
-    }
+    &:hover {
+        .image {
+            opacity: 0.7;
+        }
 
-    &:hover>.date {
-        display: block !important;
-    }
+        .date {
+            visibility: visible;
+        }
 
-    &:hover>.card-info {
-        background-color: rgba(0, 0, 0, 0.8) !important;
-        height: 25%;
+        .card-info {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            height: 25%;
+        }
     }
 }
 
@@ -44,7 +47,11 @@
 }
 
 .date {
-    // visibility: hidden;
+    visibility: hidden;
+    position: absolute;
+    margin: 5px;
+    bottom: 0;
+    right: 0;
     color: white;
     text-align: right;
 }

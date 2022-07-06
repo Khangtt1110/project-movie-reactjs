@@ -1,8 +1,8 @@
 export const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
-    // autoplay: true,
+    speed: 300,
+    autoplay: true,
     slidesToShow: 4,
     swipeToSlide: true,
     initialSlide: 0,

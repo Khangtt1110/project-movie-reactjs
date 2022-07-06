@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Image, Grid, Header } from 'semantic-ui-react';
+import { Card, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './MovieCard.module.scss';
@@ -8,7 +8,6 @@ const cx = classNames.bind(styles);
 
 const MovieCard = (props) => {
     const { data } = props;
-    console.log(data);
     return (
         <div className={cx('wrapper')}>
             <Card link className={cx('card')}>

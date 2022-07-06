@@ -17,24 +17,24 @@ const MovieList = () => {
     let renderSeries = '';
     renderMovies =
         movies.Response === 'True' ? (
-            movies.Search.map((item, index) => <MovieCard key={index} data={item} />)
+            movies.Search?.map((item, index) => <MovieCard key={index} data={item} />)
         ) : (
             <div></div>
         );
     renderSeries =
         movies.Response === 'True' ? (
-            series.Search.map((item, index) => <MovieCard key={index} data={item} />)
+            series.Search?.map((item, index) => <MovieCard key={index} data={item} />)
         ) : (
             <div></div>
         );
     return (
         <Container className={cx('wrapper')}>
-            <Header size="huge" textAlign="lef" className={cx('title')}>
+            <Header size="huge" textAlign="left" className={cx('title')}>
                 Movies
             </Header>
             <Divider />
             <Slider {...settings}>{renderMovies}</Slider>
-            <Header size="huge" textAlign="lef" className={cx('title')}>
+            <Header size="huge" textAlign="left" className={cx('title')}>
                 Series
             </Header>
             <Divider />

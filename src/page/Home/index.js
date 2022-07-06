@@ -12,12 +12,12 @@ const cx = classNames.bind(styles);
 const Home = () => {
     const dispatch = useDispatch();
     const movieData = 'Doraemon';
-    const seriesData = 'Conan';
+    const seriesData = 'Harry';
 
     useEffect(() => {
         dispatch(fetchAsyncMovies(movieData));
         dispatch(fetchAsyncSeries(seriesData));
-    }, [dispatch]);
+    }, []);
     return (
         <div>
             <Header />
