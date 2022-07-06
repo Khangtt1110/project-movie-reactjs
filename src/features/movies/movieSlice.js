@@ -35,6 +35,7 @@ const movieSlice = createSlice({
             console.log('Pending');
         },
         [fetchAsyncMovies.fulfilled]: (state, { payload }) => {
+            console.log(payload);
             return { ...state, movies: payload };
         },
         [fetchAsyncSeries.fulfilled]: (state, { payload }) => {

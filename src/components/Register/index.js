@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import { registerUser } from '~/features/user/userSlice';
 
 const Register = () => {
+    const dispatch = useDispatch();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [list, setList] = useState([]);
 
     useEffect(() => {
-        localStorage.setItem('user', JSON.stringify(list));
+        dispatch(registerUser(list));
     }, [list]);
 
     const registerHandler = (e) => {

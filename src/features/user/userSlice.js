@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { useEffect } from 'react';
 
 const initialState = {
     allUser: [],
@@ -7,9 +6,13 @@ const initialState = {
     login: false,
 };
 
-export const getAllUserLocalStorage = createAsyncThunk('movies/getAllUserLocalStorage', async (data) => {
+export const getAllUserLocalStorage = createAsyncThunk('movies/getAllUserLocalStorage', async () => {
     const response = await JSON.parse(localStorage.getItem('user'));
     return response;
+});
+
+export const registerUser = createAsyncThunk('movies/registerUser', async (data) => {
+    localStorage.setItem('user', JSON.stringify(data));
 });
 
 const userSlice = createSlice({
@@ -17,10 +20,13 @@ const userSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        [getAllUserLocalStorage]: (state, { payload }) => {
+        [getAllUserLocalStorage.fulfilled]: (state, { payload }) => {
             return { ...state, allUser: payload };
+        },
+        [registerUser.fulfilled]: (state) => {
+            console.log('Success');
         },
     },
 });
-export default userSlice.reducer;
 export const getAllUser = (state) => state.user.allUser;
+export default userSlice.reducer;

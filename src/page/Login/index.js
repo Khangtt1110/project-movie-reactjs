@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 import { getAllUser, getAllUserLocalStorage } from '~/features/user/userSlice';
@@ -12,10 +12,9 @@ const Login = () => {
 
     useEffect(() => {
         dispatch(getAllUserLocalStorage());
-        console.log(dispatch(getAllUserLocalStorage()));
     }, [dispatch]);
-    const a = getAllUser;
-    console.log(a);
+    const allUser = useSelector(getAllUser);
+    console.log(allUser);
 
     const loginHandler = (e) => {
         e.preventDefault();
