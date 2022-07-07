@@ -22,10 +22,10 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         addUserProfile: (state, { payload }) => {
-            return { user: payload };
+            return { ...state, user: payload };
         },
         acceptToken: (state, { payload }) => {
-            return { token: payload };
+            return { ...state, token: payload };
         },
         removeToken: (state) => {
             return { token: false };

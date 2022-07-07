@@ -14,8 +14,6 @@ const Login = () => {
         username: '',
         password: '',
     });
-    // constants to redirect
-    const [accept, setAccept] = useState();
     // Get all auth from API
     const allUser = useSelector(getAllAuth);
     //Get username and password
@@ -26,28 +24,28 @@ const Login = () => {
     //fetch data from API and check info user with data
     useEffect(() => {
         dispatch(fetchAsyncAllAuth());
-        // if (!!allUser.find((item) => item.username === user.username && item.password === user.password)) {
-        //     dispatch(
-        //         addUserProfile(
-        //             allUser.find((item) => item.username === user.username && item.password === user.password),
-        //         ),
-        //     );
-        //     dispatch(acceptToken(true));
-        //     navigate('/');
-        // }
-
-        for (let i = 0; i < allUser?.length; i++) {
-            if (allUser[i]?.username === user.username && allUser[i].password === user.password) {
-                dispatch(
-                    addUserProfile(
-                        allUser.find((item) => item.username === user.username && item.password === user.password),
-                    ),
-                );
-                dispatch(acceptToken(true));
-                navigate('/');
-                break;
-            }
+        if (!!allUser?.find((item) => item.username === user.username && item.password === user.password)) {
+            dispatch(
+                addUserProfile(
+                    allUser.find((item) => item.username === user.username && item.password === user.password),
+                ),
+            );
+            dispatch(acceptToken(true));
+            navigate('/');
         }
+
+        // for (let i = 0; i < allUser?.length; i++) {
+        //     if (allUser[i]?.username === user.username && allUser[i].password === user.password) {
+        //         dispatch(
+        //             addUserProfile(
+        //                 allUser.find((item) => item.username === user.username && item.password === user.password),
+        //             ),
+        //         );
+        //         dispatch(acceptToken(true));
+        //         navigate('/');
+        //         break;
+        //     }
+        // }
     }, [dispatch, user]);
 
     return (

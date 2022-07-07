@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
-import { Form, Input, Menu } from 'semantic-ui-react';
+import { Button, Form, Input, Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAsyncMovies, fetchAsyncSeries } from '~/features/movies/movieSlice';
-import { acceptToken, getToken, removeToken } from '~/features/auth/authSlice';
+import { getToken, getUser, removeToken } from '~/features/auth/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -14,6 +14,7 @@ const Header = () => {
     const [active, setActive] = useState('home');
     const [searchValue, setSearchValue] = useState('');
     const token = useSelector(getToken);
+    const auth = useSelector(getUser);
     const activeItem = active;
     const handleItemClick = (e, { name }) => setActive(name);
     const submitHandler = (e) => {
@@ -26,8 +27,7 @@ const Header = () => {
             alert('Input empty');
         }
     };
-    const remove = () => {
-        console.log('remove');
+    const removeTokenHandler = () => {
         dispatch(removeToken());
     };
     return (
@@ -50,9 +50,12 @@ const Header = () => {
             </Form>
             {/* <Menu.Item name="messages" active={activeItem === 'messages'} onClick={handleItemClick} /> */}
             {token ? (
-                <Link to="/">
-                    <Menu.Item name="logout" active={activeItem === 'logout'} onClick={remove} />
-                </Link>
+                <>
+                    <Link to="/">
+                        <Menu.Item name="logout" active={activeItem === 'logout'} onClick={removeTokenHandler} />
+                    </Link>
+                    <Button>{auth.username}</Button>
+                </>
             ) : (
                 <Link to="/login">
                     <Menu.Item name="login" active={activeItem === 'login'} onClick={handleItemClick} />

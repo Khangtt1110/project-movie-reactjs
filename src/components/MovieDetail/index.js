@@ -11,7 +11,6 @@ const cx = classNames.bind(styles);
 const MovieDetail = () => {
     const data = useSelector(getMovieDetail);
     const auth = useSelector(getToken);
-    console.log(auth);
     return (
         <>
             {!auth ? (
