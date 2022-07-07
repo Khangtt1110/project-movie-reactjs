@@ -2,29 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import { fetchAsyncAllAuth, getAllAuth } from '~/features/auth/authSlice';
 const Login = () => {
     const dispatch = useDispatch();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [user, setUser] = useState({});
-
-    useEffect(() => {
-        const allUser = localStorage.getItem('auth');
-        console.log(allUser);
-        // allUser.map((item) => {
-        //     if (item.username === user.username) {
-        //         console.log('True');
-        //     }
-        // });
-    }, [user]);
-
+    const [user, setUser] = useState({
+        username: '',
+        password: '',
+    });
+    // constants to redirect
+    const [accept, setAccept] = useState();
+    // Get all auth from API
+    const allUser = useSelector(getAllAuth);
+    //Get username and password
     const loginHandler = (e) => {
         e.preventDefault();
         setUser({ username: username, password: password });
     };
+    //fetch data from API and check info user with data
+    useEffect(() => {
+        dispatch(fetchAsyncAllAuth());
+        for (let i = 0; i < allUser.length; i++) {
+            if (allUser[i]?.username === user.username && allUser[i].password === user.password) {
+                setAccept(true);
+                break;
+            }
+        }
+    }, [dispatch, user]);
+
     return (
         <div>
             <>
+                {accept && <Navigate to="/" replace={true} setAccept={false} />}
                 <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
                     <Grid.Column style={{ maxWidth: 450 }}>
                         <Header as="h2" color="teal" textAlign="center">
