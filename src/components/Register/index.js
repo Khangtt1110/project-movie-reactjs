@@ -2,27 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
-import { registerUser } from '~/features/user/userSlice';
 
 const Register = () => {
     const dispatch = useDispatch();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [list, setList] = useState([]);
-
-    useEffect(() => {
-        dispatch(registerUser(list));
-    }, [list]);
+    const [user, setUser] = useState([]);
 
     const registerHandler = (e) => {
         e.preventDefault();
-        const user = {
-            id: Math.random() * 10,
-            username: username,
-            password: password,
-        };
-        setList([...list, user]);
+        setUser({ username: username, password: password });
+        setUsername('');
+        setPassword('');
     };
+
+    useEffect(() => {
+        localStorage.setItem('auth', JSON.stringify(user));
+        console.log(user);
+    }, [user]);
+
     return (
         <div>
             <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
@@ -38,12 +36,14 @@ const Register = () => {
                                 icon="user"
                                 iconPosition="left"
                                 placeholder="E-mail address"
+                                value={username}
                                 onChange={(e) => {
                                     setUsername(e.target.value);
                                 }}
                             />
                             <Form.Input
                                 fluid
+                                value={password}
                                 icon="lock"
                                 iconPosition="left"
                                 placeholder="Password"

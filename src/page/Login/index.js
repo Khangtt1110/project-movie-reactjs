@@ -2,32 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
-import { getAllUser, getAllUserLocalStorage } from '~/features/user/userSlice';
 const Login = () => {
     const dispatch = useDispatch();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState({});
-    const [accept, setAccept] = useState(null);
 
     useEffect(() => {
-        dispatch(getAllUserLocalStorage());
-    }, [dispatch]);
-    const allUser = useSelector(getAllUser);
-    console.log(allUser);
+        const allUser = localStorage.getItem('auth');
+        console.log(allUser);
+        // allUser.map((item) => {
+        //     if (item.username === user.username) {
+        //         console.log('True');
+        //     }
+        // });
+    }, [user]);
 
     const loginHandler = (e) => {
         e.preventDefault();
-        const tmp = {
-            username: username,
-            password: password,
-        };
-        setUser(tmp);
+        setUser({ username: username, password: password });
     };
     return (
         <div>
             <>
-                {accept && <Navigate to="/" replace={true} setAccept={false} />}
                 <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
                     <Grid.Column style={{ maxWidth: 450 }}>
                         <Header as="h2" color="teal" textAlign="center">
