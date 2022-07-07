@@ -3,8 +3,9 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { Form, Input, Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchAsyncMovies, fetchAsyncSeries } from '~/features/movies/movieSlice';
+import { acceptToken, getToken, removeToken } from '~/features/auth/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -12,6 +13,7 @@ const Header = () => {
     const dispatch = useDispatch();
     const [active, setActive] = useState('home');
     const [searchValue, setSearchValue] = useState('');
+    const token = useSelector(getToken);
     const activeItem = active;
     const handleItemClick = (e, { name }) => setActive(name);
     const submitHandler = (e) => {
@@ -23,6 +25,10 @@ const Header = () => {
         } else {
             alert('Input empty');
         }
+    };
+    const remove = () => {
+        console.log('remove');
+        dispatch(removeToken());
     };
     return (
         <Menu borderless fixed="top" size="massive" className={cx('wrapper')}>
@@ -43,9 +49,15 @@ const Header = () => {
                 </Menu.Item>
             </Form>
             {/* <Menu.Item name="messages" active={activeItem === 'messages'} onClick={handleItemClick} /> */}
-            <Link to="/login">
-                <Menu.Item name="login" active={activeItem === 'login'} onClick={handleItemClick} />
-            </Link>
+            {token ? (
+                <Link to="/">
+                    <Menu.Item name="logout" active={activeItem === 'logout'} onClick={remove} />
+                </Link>
+            ) : (
+                <Link to="/login">
+                    <Menu.Item name="login" active={activeItem === 'login'} onClick={handleItemClick} />
+                </Link>
+            )}
         </Menu>
     );
 };

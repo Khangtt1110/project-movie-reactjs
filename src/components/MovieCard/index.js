@@ -8,6 +8,7 @@ const cx = classNames.bind(styles);
 
 const MovieCard = (props) => {
     const { data } = props;
+
     return (
         <div className={cx('wrapper')}>
             <Card link className={cx('card')}>

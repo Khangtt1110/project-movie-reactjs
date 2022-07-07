@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import { acceptToken } from '~/features/auth/authSlice';
+import { addUserProfile } from '~/features/auth/authSlice';
 import { fetchAsyncAllAuth, getAllAuth } from '~/features/auth/authSlice';
 const Login = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState({
@@ -23,9 +26,25 @@ const Login = () => {
     //fetch data from API and check info user with data
     useEffect(() => {
         dispatch(fetchAsyncAllAuth());
-        for (let i = 0; i < allUser.length; i++) {
+        // if (!!allUser.find((item) => item.username === user.username && item.password === user.password)) {
+        //     dispatch(
+        //         addUserProfile(
+        //             allUser.find((item) => item.username === user.username && item.password === user.password),
+        //         ),
+        //     );
+        //     dispatch(acceptToken(true));
+        //     navigate('/');
+        // }
+
+        for (let i = 0; i < allUser?.length; i++) {
             if (allUser[i]?.username === user.username && allUser[i].password === user.password) {
-                setAccept(true);
+                dispatch(
+                    addUserProfile(
+                        allUser.find((item) => item.username === user.username && item.password === user.password),
+                    ),
+                );
+                dispatch(acceptToken(true));
+                navigate('/');
                 break;
             }
         }
@@ -34,7 +53,6 @@ const Login = () => {
     return (
         <div>
             <>
-                {accept && <Navigate to="/" replace={true} setAccept={false} />}
                 <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
                     <Grid.Column style={{ maxWidth: 450 }}>
                         <Header as="h2" color="teal" textAlign="center">

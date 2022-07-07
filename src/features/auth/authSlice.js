@@ -4,6 +4,7 @@ import authApi from '~/common/api/authApi';
 const initialState = {
     allUser: [],
     user: {},
+    token: false,
 };
 
 export const fetchAsyncAllAuth = createAsyncThunk('auth/fetchAsyncAllAuth', async () => {
@@ -19,18 +20,33 @@ export const registerNewAuth = createAsyncThunk('auth/registerNewAuth', async (d
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    extraReducers: {
-        [fetchAsyncAllAuth.pending]: () => {
-            console.log('User Pending');
+    reducers: {
+        addUserProfile: (state, { payload }) => {
+            return { user: payload };
         },
+        acceptToken: (state, { payload }) => {
+            return { token: payload };
+        },
+        removeToken: (state) => {
+            return { token: false };
+        },
+    },
+    extraReducers: {
+        [fetchAsyncAllAuth.pending]: () => {},
         [fetchAsyncAllAuth.fulfilled]: (state, { payload }) => {
             return { ...state, allUser: payload };
         },
         [registerNewAuth.fulfilled]: (state, { payload }) => {
             return { ...state, allUser: payload };
         },
+        [fetchAsyncAllAuth.rejected]: (state) => {
+            console.log('API Reject');
+        },
     },
 });
 
+export const { addUserProfile, acceptToken, removeToken } = authSlice.actions;
+export const getToken = (state) => state.auth.token;
 export const getAllAuth = (state) => state.auth.allUser;
+export const getUser = (state) => state.auth.user;
 export default authSlice.reducer;
