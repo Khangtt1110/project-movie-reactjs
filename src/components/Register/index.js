@@ -1,35 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import { registerNewAuth } from '~/features/auth/authSlice';
 
 const Register = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [success, setSuccess] = useState(null);
     const [user, setUser] = useState([]);
 
     const registerHandler = (e) => {
         e.preventDefault();
-        const tmp = {
-            id: Math.random() * 10,
+        setUser({
             username: username,
             password: password,
-        };
-        setUser([...user, tmp]);
+        });
         setUsername('');
         setPassword('');
     };
     useEffect(() => {
-        if (user) {
-            localStorage.setItem('auth', JSON.stringify(user));
+        if (user.username) {
+            dispatch(registerNewAuth(user));
+            navigate('/login');
         }
     }, [user]);
 
     return (
         <div>
-            {success && <Navigate to="/register" replace={true} setSuccess={false} />}
             <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
                 <Grid.Column style={{ maxWidth: 450 }}>
                     <Header>Register</Header>
