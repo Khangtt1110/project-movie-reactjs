@@ -25,10 +25,13 @@ const authSlice = createSlice({
             return { ...state, user: payload };
         },
         acceptToken: (state, { payload }) => {
-            return { ...state, token: payload };
+            return { ...state, token: !!localStorage.setItem('token', true) };
+        },
+        getTokenLocalStorage: (state) => {
+            return { ...state, token: localStorage.getItem('token') };
         },
         removeToken: (state) => {
-            return { token: false };
+            return localStorage.setItem('token', false);
         },
     },
     extraReducers: {
@@ -45,7 +48,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { addUserProfile, acceptToken, removeToken } = authSlice.actions;
+export const { addUserProfile, acceptToken, removeToken, getTokenLocalStorage } = authSlice.actions;
 export const getToken = (state) => state.auth.token;
 export const getAllAuth = (state) => state.auth.allUser;
 export const getUser = (state) => state.auth.user;

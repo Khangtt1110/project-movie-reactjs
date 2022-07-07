@@ -1,19 +1,20 @@
 import classNames from 'classnames/bind';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { Button, Grid, Header, Image } from 'semantic-ui-react';
-import { getToken } from '~/features/auth/authSlice';
+import { getToken, getTokenLocalStorage } from '~/features/auth/authSlice';
 import { getMovieDetail } from '~/features/movies/movieSlice';
 import styles from './MovieDetail.module.scss';
 
 const cx = classNames.bind(styles);
 
 const MovieDetail = () => {
+    const dispatch = useDispatch();
     const data = useSelector(getMovieDetail);
-    const auth = useSelector(getToken);
+    const token = useSelector(getToken);
     return (
         <>
-            {!auth ? (
+            {!token ? (
                 <Navigate to="/login" replace={true} />
             ) : (
                 <Grid container stackable className={cx('wrapper')}>

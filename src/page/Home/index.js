@@ -6,6 +6,7 @@ import Footer from '~/layout/Footer';
 import MovieList from '~/components/MovieList';
 import { useDispatch } from 'react-redux';
 import { fetchAsyncMovies, fetchAsyncSeries } from '~/features/movies/movieSlice';
+import { getTokenLocalStorage } from '~/features/auth/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +16,7 @@ const Home = () => {
     const seriesData = 'Harry';
 
     useEffect(() => {
+        dispatch(getTokenLocalStorage());
         dispatch(fetchAsyncMovies(movieData));
         dispatch(fetchAsyncSeries(seriesData));
     }, []);

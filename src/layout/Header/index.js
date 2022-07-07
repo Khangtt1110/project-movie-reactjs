@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { Button, Form, Input, Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAsyncMovies, fetchAsyncSeries } from '~/features/movies/movieSlice';
-import { getToken, getUser, removeToken } from '~/features/auth/authSlice';
+import { getToken, getTokenLocalStorage, getUser, removeToken } from '~/features/auth/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -13,7 +13,6 @@ const Header = () => {
     const dispatch = useDispatch();
     const [active, setActive] = useState('home');
     const [searchValue, setSearchValue] = useState('');
-    const token = useSelector(getToken);
     const auth = useSelector(getUser);
     const activeItem = active;
     const handleItemClick = (e, { name }) => setActive(name);
@@ -27,6 +26,11 @@ const Header = () => {
             alert('Input empty');
         }
     };
+    const token = useSelector(getToken);
+    console.log(token);
+    useEffect(() => {
+        dispatch(getTokenLocalStorage());
+    });
     const removeTokenHandler = () => {
         dispatch(removeToken());
     };
