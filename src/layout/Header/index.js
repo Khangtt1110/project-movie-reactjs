@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { Button, Form, Input, Menu } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAsyncMovies, fetchAsyncSeries } from '~/features/movies/movieSlice';
 import { getToken, getTokenLocalStorage, getUser, removeToken } from '~/features/auth/authSlice';
@@ -10,6 +10,7 @@ import { getToken, getTokenLocalStorage, getUser, removeToken } from '~/features
 const cx = classNames.bind(styles);
 
 const Header = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [active, setActive] = useState('home');
     const [searchValue, setSearchValue] = useState('');
@@ -27,12 +28,12 @@ const Header = () => {
         }
     };
     const token = useSelector(getToken);
-    console.log(token);
     useEffect(() => {
         dispatch(getTokenLocalStorage());
     });
     const removeTokenHandler = () => {
         dispatch(removeToken());
+        navigate('/');
     };
     return (
         <Menu borderless fixed="top" size="massive" className={cx('wrapper')}>
@@ -53,7 +54,7 @@ const Header = () => {
                 </Menu.Item>
             </Form>
             {/* <Menu.Item name="messages" active={activeItem === 'messages'} onClick={handleItemClick} /> */}
-            {token ? (
+            {token === 'true' ? (
                 <>
                     <Link to="/">
                         <Menu.Item name="logout" active={activeItem === 'logout'} onClick={removeTokenHandler} />
