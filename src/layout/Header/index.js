@@ -5,7 +5,7 @@ import { Button, Form, Input, Menu } from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAsyncMovies, fetchAsyncSeries } from '~/features/movies/movieSlice';
-import { getToken, getTokenLocalStorage, getUser, removeToken } from '~/features/auth/authSlice';
+import { getAuthLocalStorage, getUser, removeAuthLocalStorage } from '~/features/auth/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +15,10 @@ const Header = () => {
     const [active, setActive] = useState('home');
     const [searchValue, setSearchValue] = useState('');
     const auth = useSelector(getUser);
+    let token = false;
+    if (!!auth) {
+        token = auth.token;
+    }
     const activeItem = active;
     const handleItemClick = (e, { name }) => setActive(name);
     const submitHandler = (e) => {
@@ -27,12 +31,13 @@ const Header = () => {
             alert('Input empty');
         }
     };
-    const token = useSelector(getToken);
     useEffect(() => {
-        dispatch(getTokenLocalStorage());
-    });
+        dispatch(getAuthLocalStorage());
+    }, []);
+    
     const removeTokenHandler = () => {
-        dispatch(removeToken());
+        dispatch(removeAuthLocalStorage());
+        dispatch(getAuthLocalStorage());
         navigate('/');
     };
     return (
@@ -54,7 +59,7 @@ const Header = () => {
                 </Menu.Item>
             </Form>
             {/* <Menu.Item name="messages" active={activeItem === 'messages'} onClick={handleItemClick} /> */}
-            {token === 'true' ? (
+            {token ? (
                 <>
                     <Link to="/">
                         <Menu.Item name="logout" active={activeItem === 'logout'} onClick={removeTokenHandler} />

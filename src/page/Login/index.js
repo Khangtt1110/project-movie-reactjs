@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
-import { acceptToken } from '~/features/auth/authSlice';
-import { addUserProfile } from '~/features/auth/authSlice';
+import { setAuthLocalStorage } from '~/features/auth/authSlice';
 import { fetchAsyncAllAuth, getAllAuth } from '~/features/auth/authSlice';
 const Login = () => {
     const dispatch = useDispatch();
@@ -24,13 +23,9 @@ const Login = () => {
     //fetch data from API and check info user with data
     useEffect(() => {
         dispatch(fetchAsyncAllAuth());
-        if (!!allUser?.find((item) => item.username === user.username && item.password === user.password)) {
-            dispatch(
-                addUserProfile(
-                    allUser.find((item) => item.username === user.username && item.password === user.password),
-                ),
-            );
-            dispatch(acceptToken(true));
+        const tmp = allUser?.find((item) => item.username === user.username && item.password === user.password);
+        if (!!tmp) {
+            dispatch(setAuthLocalStorage(tmp));
             navigate('/');
         }
 

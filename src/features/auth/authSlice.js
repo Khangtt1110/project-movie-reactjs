@@ -3,7 +3,11 @@ import authApi from '~/common/api/authApi';
 
 const initialState = {
     allUser: [],
-    user: {},
+    user: {
+        username: '',
+        password: '',
+        token: false,
+    },
     token: false,
 };
 
@@ -21,17 +25,17 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        addUserProfile: (state, { payload }) => {
-            return { ...state, user: payload };
+        setAuthLocalStorage: (state, { payload }) => {
+            return localStorage.setItem('auth', JSON.stringify(payload));
         },
-        acceptToken: (state, { payload }) => {
-            return { ...state, token: !!localStorage.setItem('token', true) };
+        removeAuthLocalStorage: (state) => {
+            return localStorage.removeItem('auth');
         },
-        getTokenLocalStorage: (state) => {
-            return { ...state, token: localStorage.getItem('token') };
+        getAuthLocalStorage: (state) => {
+            return { ...state, user: JSON.parse(localStorage.getItem('auth')) };
         },
-        removeToken: (state) => {
-            return localStorage.setItem('token', false);
+        getTokenLocalStorages: (state) => {
+            return { ...state, token: initialState.user.token };
         },
     },
     extraReducers: {
@@ -48,8 +52,9 @@ const authSlice = createSlice({
     },
 });
 
-export const { addUserProfile, acceptToken, removeToken, getTokenLocalStorage } = authSlice.actions;
-export const getToken = (state) => state.auth.token;
+export const { setAuthLocalStorage, removeAuthLocalStorage, getAuthLocalStorage, getTokenLocalStorages } =
+    authSlice.actions;
 export const getAllAuth = (state) => state.auth.allUser;
 export const getUser = (state) => state.auth.user;
+export const getToken = (state) => state.auth.token;
 export default authSlice.reducer;

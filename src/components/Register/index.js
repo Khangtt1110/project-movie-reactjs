@@ -16,6 +16,7 @@ const Register = () => {
         setUser({
             username: username,
             password: password,
+            token: true,
         });
         setUsername('');
         setPassword('');
